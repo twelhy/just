@@ -1,0 +1,32 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.screen {
+    background-color: green;
+    border: 1px soild black;
+    border-radius: 10px;
+    width: 300px;
+    height: 300px;
+}
+
+.player {
+    background-color: red;
+    width: 25px;
+    height: 25px;
+}
+
+.remote {
+    display: table;
+    background-color: gray;
+    width: 300px;
+    height: 200px;
+    justify-self: center;
+}
+
+.rem {
+    background-color: saddlebrown;
+    width: 100px;
+    height: 100px;
+}

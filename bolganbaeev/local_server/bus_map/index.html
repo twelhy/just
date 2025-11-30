@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bus Map</title>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map {
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+    <label for="number">Маршрутты таңда:</label>
+<select id="number">
+  <option value="1">1</option>
+  <option value="1">1A</option>
+  <option value="2">2</option>
+  <option value="2">2A</option>
+  <option value="5">4</option>
+  <option value="5">4A</option>
+  <option value="5">5</option>
+  <option value="5A">5A</option>
+  <option value="6">6</option>
+  <option value="7">7</option>
+  <option value="8">8</option>
+  <option value="9">9</option>
+  <option value="9A">9A</option>
+  <option value="10">10</option>
+  <option value="15">14</option>
+  <option value="15">15</option>
+  <option value="15">16</option>
+  <option value="15">17</option>
+  <option value="18">18</option>
+  <option value="20">20</option>
+  <option value="30">30</option>
+  <option value="31">31</option>
+</select>
+<button onclick="updateBuses()">Жаңарту</button>
+
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+  // Картаны ашамыз
+  const map = L.map('map').setView([43.2981, 68.2386], 14);
+  const greenIcon = L.icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
+
+const redIcon = L.icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
+
+  
+  // OpenStreetMap қабатын қосамыз
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  // 🔹 Барлық маркерлерді осы массивте сақтаймыз
+  let markers = [];
+
+  // 🔹 Автобустарды жаңарту функциясы
+  function updateBuses() {
+    const number = document.getElementById('number').value;
+
+    fetch(`https://app.alempay.kz/api/service-info/position/?format=json&lang=kz&region=12&route=${number}`)
+      .then(res => res.json())
+      .then(data => {
+        // Ескі маркерлерді картадан өшіреміз
+        markers.forEach(m => map.removeLayer(m));
+        markers = [];
+
+        // Жаңа маркерлерді картаға қосамыз
+        data.pos.forEach(bus => {
+            const icon = bus.dir === 1 ? greenIcon : redIcon;
+            const marker = L.marker([bus.lat, bus.lon], { icon })
+                .addTo(map)
+                .bindPopup(`Автобус №${number}<br>Бағыт: ${bus.dir === 1 ? "Бара жатыр" : "Келіп жатыр"}`);
+            
+            markers.push(marker);
+        });
+      });
+  }
+
+  // 🔹 Алғашқы жаңарту
+  updateBuses();
+
+  // 🔹 Әр 5 секунд сайын жаңарту
+  setInterval(updateBuses, 5000);
+</script>
+</body>
+</html>

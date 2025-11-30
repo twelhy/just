@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login & Profile</title>
+</head>
+<body>
+<h2>Login</h2>
+<input type="text" id="loginUser" placeholder="Username">
+<input type="password" id="passUser" placeholder="Password">
+<button onclick="login()">Login</button>
+
+<h2>Profile</h2>
+<button onclick="getProfile()">Get Profile</button>
+<pre id="profileData"></pre>
+
+<script>
+async function login() {
+    const name = document.getElementById("loginUser").value;
+    const password = document.getElementById("passUser").value;
+
+    try {
+        const response = await fetch("http://127.0.0.1:3000/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name, password })
+        });
+        const data = await response.json();
+        if(data.token){
+            localStorage.setItem("token", data.token);
+            alert("Login successful! Token saved.");
+        } else {
+            alert("Login failed: " + JSON.stringify(data));
+        }
+    } catch(err) {
+        console.error("Error:", err);
+    }
+}
+
+async function getProfile() {
+    const token = localStorage.getItem("token");
+    if(!token) return alert("No token found, please login first.");
+
+    try {
+        const response = await fetch("http://127.0.0.1:3000/profile", {
+            method: "GET",
+            headers: { "Authorization": "Bearer " + token }
+        });
+        const data = await response.json();
+        document.getElementById("profileData").textContent = JSON.stringify(data, null, 2);
+    } catch(err) {
+        console.error("Error:", err);
+    }
+}
+</script>
+</body>
+</html>

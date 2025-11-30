@@ -1,0 +1,1 @@
+adb shell cat /storage/emulated/0/ww.txt

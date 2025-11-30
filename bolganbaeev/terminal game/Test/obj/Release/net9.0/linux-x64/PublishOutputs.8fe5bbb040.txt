@@ -1,0 +1,2 @@
+/home/linx/bolganbaeev/bolganbaeev/terminal game/Test/bin/Release/net9.0/linux-x64/publish/Test.pdb
+/home/linx/bolganbaeev/bolganbaeev/terminal game/Test/bin/Release/net9.0/linux-x64/publish/Test

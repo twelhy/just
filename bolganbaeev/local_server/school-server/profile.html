@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div>
+    
+</div>
+
+
+<script>
+function homes() {
+    document.getElementById("home").style.display = "block";
+    document.getElementById("daily").style.display = "none";
+    document.getElementById("aboutMe").style.display = "none";
+}
+function dailys() {
+    document.getElementById("home").style.display = "none";
+    document.getElementById("daily").style.display = "block";
+    document.getElementById("aboutMe").style.display = "none";
+}
+function aboutMes() {
+    document.getElementById("home").style.display = "none";
+    document.getElementById("daily").style.display = "none";
+    document.getElementById("aboutMe").style.display = "block";
+}
+async function loadProfile() {
+    const firstname = localStorage.getItem("savedName");
+    const password = localStorage.getItem("savedPass");
+    const response = await fetch("http://localhost:3000/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ firstname, password })
+        });
+        const data = await response.json();
+    const token = data.token;
+    if (!token) return alert("No token found, please login first.");
+
+    try {
+        const response = await fetch("http://localhost:3000/profile", {
+            method: "GET",
+            headers: { "Authorization": "Bearer " + token }
+        });
+        const data = await response.json();
+        screen = document.createElement("div");
+        screen.innerHTML = `
+        <div>
+            <div class="leftside">
+        <div class="logo"><img src="bastau.png"><h1>Bastau</h1><ul><li onclick="homes()">Home</li><li onclick="dailys()">Daily</li><li onclick="aboutMes()">About me</li></ul></div>
+    </div>
+    <div id="home" class="home">
+        <h1>Hello, ${data.user.firstname}</h1>
+        <div class="link">
+        <div class="icons" onclick="dailys()">
+            <img src="daily.png" alt=""> <h1>Daily</h1>
+        </div>
+        <div class="icons" onclick="aboutMes()"><img src="about.png" alt=""> <h1>About me</h1></div>
+    </div>
+</div>
+            <div id="daily" class="daily">
+    <div class="dailyline">
+        <div></div><div>Дүйсенбі</div><div>Сейсенбі</div><div>Сәрсенбі</div><div>Бейсенбі</div><div>Жұма</div>
+    </div>
+    <div class="dailyline">
+        <div>09:00 - 09:45</div><div>АӘД</div><div>Қ. тарих</div><div>Математика</div><div>Матем. сауат</div><div>Психология</div>
+    </div>
+    <div class="dailyline">
+        <div>09:55 - 10:40</div><div>Д/шы</div><div>Матем. сауат</div><div>Тап. орындау</div><div>Қ. тарих</div><div>Тап. орындау</div>
+    </div>
+    <div class="dailyline">
+        <div>10:50 - 11:35</div><div>Математика</div><div>Тап. орындау</div><div>Тап. орындау</div><div>Д/шы</div><div>Матем. сауат</div>
+    </div>
+    <div class="dailyline">
+        <div>11:50 - 12:35</div><div>Информатика</div><div>Ағылшын тілі</div><div>Информатика</div><div>Ағылшын тілі</div><div>Информатика</div>
+    </div>
+    <div class="dailyline">
+        <div>12:45 - 13:30</div><div>Қазақ тілі</div><div>Орыс тілі</div><div>Тұлғалық даму</div><div>Математика</div><div>Абайтану</div>
+    </div>
+</div>
+            <div id="aboutMe" class="aboutMe">Firstname: ${data.user.firstname}<br>
+                Surname: ${data.user.surname}<br>
+                Grade: ${data.user.grade}<br>
+                birthday: ${data.user.birthday}<br>
+                Age: ${data.user.age}<br>
+                <button onclick="logout()">Logout</button>
+            </div>
+        </div>
+        `
+        document.body.append(screen);
+        document.getElementById("hello").innerHTML = `Hello ${data.user.firstname}`;
+        document.getElementById("point").innerHTML = "Your point: " + data.user.point1;
+        document.getElementById("profileData").textContent = JSON.stringify(data, null, 2);
+    } catch(err) {
+        console.error("Error:", err);
+    }
+}
+
+function logout() {
+    localStorage.removeItem("token");
+    window.location.href = "login.html";
+}
+
+loadProfile();
+</script>
+</body>
+</html>

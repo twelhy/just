@@ -1,0 +1,62 @@
+[
+    {
+        "name": "Tom",
+        "age": 15,
+        "sex": "Male",
+        "id": 1
+    },
+    {
+        "name": "Ramazan",
+        "age": 15,
+        "sex": "Male",
+        "id": 2
+    },
+    {
+        "name": "Marry",
+        "age": 17,
+        "sex": "Female",
+        "id": 3
+    },
+    {
+        "name": "Potter",
+        "age": 23,
+        "sex": "Female",
+        "id": 4
+    },
+    {
+        "name": "Saule",
+        "age": 50,
+        "sex": "Female",
+        "id": 5
+    },
+    {
+        "name": "Someone",
+        "age": 11,
+        "sex": "Male",
+        "id": 6
+    },
+    {
+        "name": "Askat",
+        "age": 19,
+        "sex": "Male",
+        "id": 7
+    },
+    {
+        "name": "Genius",
+        "age": 0,
+        "sex": "Male",
+        "id": 8
+    },
+    {
+        "name": "Kairat",
+        "age": 15,
+        "sex": "Male",
+        "id": 9
+    },
+    {
+        "name": "Dimash",
+        "age": 15,
+        "sex": "Male",
+        "id": 10
+    }
+]

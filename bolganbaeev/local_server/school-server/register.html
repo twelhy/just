@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    INSERT INTO users ( firstname, surname, email, password, point1, birthday, age, grade ) VALUES ('Aisana', 'Ordabai', 'aisana@gmail.com', 0000, 111, '2010-01-01', 15, '10ae');
+    <input type="text" id="firstname" class="firstname">
+    <input type="text" id="surname" class="surname">
+    <input type="email" name="email" id="email" class="email">
+    <input type="password" name="password" id="password" class="password">
+    <input type="text" id="point1" class="point1">
+    <input type="date" name="birthday" id="birthday" class="birthday">
+    <input type="text" id="age" class="age">
+    <input type="text" id="grade" class="grade">
+    <input type="submit" value="submit" onclick="login()">
+    <script>
+        
+
+        async function login() {
+            firstname = document.getElementById("firstname").value;
+            surname = document.getElementById("surname").value;
+            email = document.getElementById("email").value;
+            password = document.getElementById("password").value;
+            point1 = document.getElementById("point1").value;
+            birthday = document.getElementById("birthday").value;
+            age = document.getElementById("age").value;
+            grade = document.getElementById("grade").value;
+
+            try {
+                const response = await fetch("http://localhost:3000/register", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ "firstname": firstname, "surname": surname, "email": email, "password": password, "point1": point1, "age": age, "birthday": birthday, "grade": grade })
+                });
+                const data = await response.json();
+                if (data.token) {
+                    localStorage.setItem("savedName", firstname);
+                    localStorage.setItem("savedPass", password);
+                    window.location.href = "profile.html"; // profile бетіне ауысу
+                } else {
+                    alert("Login failed: " + JSON.stringify(data));
+                }
+            } catch(err) {
+                console.error("Error:", err);
+            }
+}
+        
+    </script>
+</body>
+</html>

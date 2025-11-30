@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Автобустар тізімі</title>
+</head>
+<body>
+  <h1>Қозғалып жатқан автобустар</h1>
+  <ul id="bus-list"></ul>
+
+  <script>
+    const data = {
+      "pos": [
+        { "id": 130050, "num": "047AQ13", "dir": 1, "lat": 43.30437618, "lon": 68.28671372 },
+        { "id": 130043, "num": "044AQ13", "dir": 2, "lat": 43.28871331, "lon": 68.24172526 },
+        { "id": 130046, "num": "164AQ13", "dir": 2, "lat": 43.29312113, "lon": 68.35341902 },
+        { "id": 130049, "num": "045AQ13", "dir": 1, "lat": 43.27512156, "lon": 68.252847 }
+      ]
+    };
+
+    const busList = document.getElementById("bus-list");
+
+    data.pos.forEach(bus => {
+      const li = document.createElement("li");
+      li.textContent = `Автобус №${bus.num} (бағыт: ${bus.dir}) - координаттар: ${bus.lat}, ${bus.lon}`;
+      busList.appendChild(li);
+    });
+  </script>
+</body>
+</html>

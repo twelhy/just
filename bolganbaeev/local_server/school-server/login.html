@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
+</head>
+<body>
+<h2>Login</h2>
+<input type="text" id="loginUser" placeholder="Username">
+<input type="password" id="passUser" placeholder="Password">
+<button onclick="login()">Login</button>
+
+<script>
+async function login() {
+    const firstname = document.getElementById("loginUser").value;
+    const password = document.getElementById("passUser").value;
+
+    try {
+        const response = await fetch("http://localhost:3000/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ firstname, password })
+        });
+        const data = await response.json();
+        if (data.token) {
+            localStorage.setItem("savedName", firstname);
+            localStorage.setItem("savedPass", password);
+            window.location.href = "profile.html"; // profile бетіне ауысу
+        } else {
+            alert("Login failed: " + JSON.stringify(data));
+        }
+    } catch(err) {
+        console.error("Error:", err);
+    }
+}
+</script>
+</body>
+</html>
